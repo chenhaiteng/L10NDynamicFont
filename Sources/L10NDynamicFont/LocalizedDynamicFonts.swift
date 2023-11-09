@@ -79,7 +79,15 @@ extension Font.TextStyle {
         case .title3:
             return .title3
         case .largeTitle:
+            #if os(tvOS)
+            if #available(tvOS 17.0, *) {
+                return .extraLargeTitle
+            } else {
+                return .title1
+            }
+            #else
             return .largeTitle
+            #endif
         case .body:
             return .body
         case .callout:
@@ -118,9 +126,17 @@ extension Font.TextStyle {
         case .title:
             return .title
         case .title2:
-            return .title2
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+                return .title2
+            } else {
+                return .title
+            }
         case .title3:
-            return .title3
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+                return .title3
+            } else {
+                return .title
+            }
         case .largeTitle:
             return .largeTitle
         case .body:
@@ -130,7 +146,11 @@ extension Font.TextStyle {
         case .caption:
             return .caption
         case .caption2:
-            return .caption2
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+                return .caption2
+            } else {
+                return .caption
+            }
         case .headline:
             return .headline
         case .subheadline:
@@ -169,7 +189,7 @@ extension Font {
 
 extension Locale {
     var compatiableLanguageCode: String? {
-        if #available(iOS 16, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             return Locale.current.language.languageCode?.identifier
         } else {
             return Locale.current.languageCode
@@ -206,7 +226,11 @@ extension Font {
             return style.font // Cannot get language code
         case let languageCode?:
             if let fonts = loadFonts(), let fontName = fonts[style, languageCode] {
-                return .custom(fontName, size: textStyleSize(style), relativeTo: style)
+                if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+                    return .custom(fontName, size: textStyleSize(style), relativeTo: style)
+                } else {
+                    return .custom(fontName, size: textStyleSize(style))
+                }
             } else {
                 debugPrint("language \(languageCode) has not support yet")
                 return style.font
@@ -218,10 +242,12 @@ extension Font {
         dynamicLocalizedFont(.title)
     }
     
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
     public static var localizedTitle2: Font {
         dynamicLocalizedFont(.title2)
     }
     
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
     public static var localizedTitle3: Font {
         dynamicLocalizedFont(.title3)
     }
@@ -230,6 +256,7 @@ extension Font {
         dynamicLocalizedFont(.caption)
     }
     
+    @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
     public static var localizedCaption2: Font {
         dynamicLocalizedFont(.caption2)
     }

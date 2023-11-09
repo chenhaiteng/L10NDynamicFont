@@ -17,8 +17,8 @@ final class LocalizedDynamicFontsTests: XCTestCase {
             XCTAssertEqual(fonts[.title, "en"], "enFont")
             XCTAssertEqual(fonts[.title, "zh"], "zhFont")
             XCTAssertNil(fonts[.title, "jp"])
-            XCTAssertNil(fonts[.title2, "zh"])
-            XCTAssertNil(fonts[.title2, "en"])
+            XCTAssertNil(fonts[.caption, "zh"])
+            XCTAssertNil(fonts[.caption, "en"])
         }
     }
     
@@ -27,9 +27,9 @@ final class LocalizedDynamicFontsTests: XCTestCase {
             let fonts = try LocalizedDynamicFonts(with: data)
             XCTAssertEqual(fonts[.title, "en"], "enFont")
             XCTAssertEqual(fonts[.title, "zh"], "zhFont")
-            XCTAssertNil(fonts[.title, "jp"])
-            XCTAssertNil(fonts[.title2, "zh"])
-            XCTAssertNil(fonts[.title2, "en"])
+            XCTAssertNil(fonts[.title, "jp"])            
+            XCTAssertNil(fonts[.caption, "zh"])
+            XCTAssertNil(fonts[.caption, "en"])
         }
     }
 }
