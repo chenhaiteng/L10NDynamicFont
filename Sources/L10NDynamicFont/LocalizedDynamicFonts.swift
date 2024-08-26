@@ -198,6 +198,15 @@ extension Locale {
 }
 
 extension Font {
+    // Create a custom font with the given `name` and the specified `textStyle`.
+    public static func custom(_ name: String, _ textStyle:TextStyle) -> Font {
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
+            return custom(name, size: textStyleSize(textStyle), relativeTo: textStyle)
+        } else {
+            return custom(name, size: textStyleSize(textStyle))
+        }
+    }
+    
     public static func localizedFont(size: CGFloat) -> Font {
         switch Locale.current.compatiableLanguageCode {
         case .none:
@@ -226,11 +235,7 @@ extension Font {
             return style.font // Cannot get language code
         case let languageCode?:
             if let fonts = loadFonts(), let fontName = fonts[style, languageCode] {
-                if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
-                    return .custom(fontName, size: textStyleSize(style), relativeTo: style)
-                } else {
-                    return .custom(fontName, size: textStyleSize(style))
-                }
+                return .custom(fontName, style)
             } else {
                 debugPrint("language \(languageCode) has not support yet")
                 return style.font
